@@ -1,0 +1,17 @@
+body {
+    background-color:#c1d2cc;
+    color:#fff;
+}
+
+.center {
+    text-align: center;
+}
+
+.logo {
+    width: 200px;
+}
+
+.questions {
+    height: 50vh;
+    overflow: auto;
+}
