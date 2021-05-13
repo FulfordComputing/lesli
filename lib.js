@@ -69,26 +69,32 @@ var LESLI = {
     },
     init: function() {
         var i = 0;
-        var html = '';
-        html = '<nav id="navbar-questions" class="navbar navbar-light bg-light flex-column align-items-stretch p-3">'
-        + '<a class="navbar-brand" href="#">Listen</a>'
-        + '<ul class="nav nav-pills">';
+        var html = '<ul class="nav nav-tabs">';
         for(var i = 0; i < LESLI.questions.categories.length; i++) {
             html += '<li class="nav-item">'
             + '<a class="nav-link" href="#h_' + i + '">' + LESLI.questions.categories[i].name + '</a>'
             + '</li>';
         }
         html += '</ul>'
-        + '</nav>'
-        + '<div data-bs-spy="scroll" data-bs-target="#navbar-questions" data-bs-offset="0" class="questions" tabindex="0">';
+        + '<div class="questions tab-content">';
         for(var i = 0; i < LESLI.questions.categories.length; i++) {
-            html += '<h4 id="h_' + i + '">' + LESLI.questions.categories[i].name + '</h4>';
+            html += '<div class="tab-pane show fade active" role="tabpanel" id="h_' + i + '">'
+            + '<h4 id="h_' + i + '">' + LESLI.questions.categories[i].name + '</h4>';
             for(var c = 0; c < LESLI.questions.categories[i].statements.length; c++) {
                 var id = 'q_' + LESLI.questions.categories[i].name + '_' + c;
-                html += '<label for="' + id + '" class="form-label">' + LESLI.questions.categories[i].statements[c] + '</label>'
-                + '<input type="range" class="form-range" id="' + id + '">';
+                html += '<div class="card question">'
+                + '<div class="card-header">'
+                + '<label for="' + id + '" class="form-label">' + LESLI.questions.categories[i].statements[c] + ':</label>'
+                + '</div>'
+                + '<div class="card-body">'
+                + '<input type="range" class="form-range" id="' + id + '" min="0" max="100">'
+                + '<span class="float-start">Never</span><span class="float-end">Always</span>'
+                + '</div>'
+                + '</div>';
             }
+            html += '</div>';
         }
+        html += '</table>';
         html += '</div>';
         
         $('#questions').html(html);
