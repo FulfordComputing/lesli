@@ -40,7 +40,7 @@ var LESLI = {
             ]
         },
         {
-            name:"Living Environment",
+            name:"Environment",
             statements: [
                 "I like where I live",
                 "I wish there were different people in my neighourhood",
@@ -67,28 +67,149 @@ var LESLI = {
         }
     ]
     },
-    init: function() {
-        var i = 0;
-        var html = '<ul class="nav nav-tabs">';
+    plotGraph: function() {
+        var canvas = document.getElementById("graph");
+        var img = document.getElementById('logo');
+        var w = canvas.width;
+        var h = canvas.height;
+        var cx = w / 2;
+        var cy = h / 2;
+        
+        var ctx = canvas.getContext("2d");
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, w, h);
+        ctx.font = '12pt Calibri';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#86867c';
+        
+        
+        var catCount = LESLI.questions.categories.length;
+
+        function xy(i, val) {
+            return {
+                x: cx - cx * val * Math.sin(i * 2 * Math.PI / catCount) / 100,
+                y: cy - cx * val * Math.cos(i * 2 * Math.PI / catCount) / 100
+            }
+        }
+
+        // draw grid
+        ctx.strokeStyle = '#e5e0ce';
+        ctx.lineWidth = 1;
+        for(var i = 0; i < catCount; i++) {
+            for(var r = 0; r <= 100; r+=10) {
+            var pt = xy(i, r);
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, 5, 0, 2 * Math.PI);
+            ctx.stroke();
+            }
+        }
+        
+        // lines
+        ctx.save();
+        ctx.strokeStyle = '#86867c';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        for(var i = 0; i < catCount; i++) {
+            var pt = xy(i, LESLI.questions.categories[i].stats.average);
+
+            if(i == 0) {
+                ctx.moveTo(pt.x, pt.y);
+            } else {
+                ctx.lineTo(pt.x, pt.y);
+            }
+            
+        }
+        ctx.closePath();
+        ctx.clip();
+        ctx.globalAlpha = 0.5;
+        var a = LESLI.questions.max / 100;
+        ctx.drawImage(img, cx - cx * a, cy - cy * a, cx * a * 2, cy * a * 2);
+        ctx.stroke();
+        ctx.restore();
+
+        for(var i = 0; i < catCount; i++) {
+            LESLI.drawTextAlongArc(ctx, LESLI.questions.categories[i].name, cx, cy, cx - 30, Math.PI * 0.03, i * 2 * Math.PI/catCount);
+        }
+    
+    },
+
+    drawTextAlongArc: function(context, str, centerX, centerY, radius, anglePerCharacter, startAngle) {
+        var len = str.length,
+            s;
+        context.save();
+        context.translate(centerX, centerY);
+        context.rotate(-1 * startAngle - (anglePerCharacter * len/2));
+        context.rotate(-1 * (anglePerCharacter) / 2);
+        for (var n = 0; n < len; n++) {
+            context.rotate(anglePerCharacter);
+            context.save();
+            context.translate(0, -1 * radius);
+            s = str[n];
+            context.fillText(s, 0, 0);
+            context.restore();
+        }
+        context.restore();
+    },
+
+    updateData: function() {
+        var total = 0;
+        var max = 0;
         for(var i = 0; i < LESLI.questions.categories.length; i++) {
+            var c = LESLI.questions.categories[i];
+            LESLI.questions.categories[i].stats = {
+                total: 0,
+                count: 0,
+                average: 0
+            }
+            for(var ci = 0; ci < LESLI.questions.categories[i].statements.length; ci++) {
+                var id = 'q_' + c.name.replace(/ /, "_") + '_' + ci;
+                var value = parseInt($('#' + id).val());
+                LESLI.questions.categories[i].stats.total+=value;
+                LESLI.questions.categories[i].stats.count++;
+            }
+            LESLI.questions.categories[i].stats.average=
+                LESLI.questions.categories[i].stats.total / LESLI.questions.categories[i].stats.count;
+            total += LESLI.questions.categories[i].stats.average;
+            if(LESLI.questions.categories[i].stats.average > max) {
+                max = LESLI.questions.categories[i].stats.average;
+            }
+        }
+        LESLI.questions.average = total / LESLI.questions.categories.length;
+        LESLI.questions.max = max;
+        LESLI.plotGraph();
+    },
+
+    init: function() {
+        
+        var i = 0;
+        var html = '<nav id="navbar-listen" class="navbar navbar-light bg-light px-3">'
+        +'<ul class="nav nav-pills">'
+        + '<li class="nav-item"><a class="nav-link" href="#Summary">Summary</a></li>';
+        for(var i = 0; i < LESLI.questions.categories.length; i++) {
+            var id = LESLI.questions.categories[i].name.replace(/ /, "_");
             html += '<li class="nav-item">'
-            + '<a class="nav-link" href="#h_' + i + '">' + LESLI.questions.categories[i].name + '</a>'
+            + '<a class="nav-link" href="#' + id + '">' + LESLI.questions.categories[i].name + '</a>'
             + '</li>';
         }
         html += '</ul>'
-        + '<div class="questions tab-content">';
+        + '</nav>'
+        + '<div data-bs-spy="scroll" data-bs-target="navbar-listen" data-bs-offset="0" class="questions tab-content">'
+        + '<div class="tab-pane show fade active" role="tabpanel" id="Summary">'
+        + '<canvas id="graph" width="400" height="400"></canvas>'
+        + '</div>';
         for(var i = 0; i < LESLI.questions.categories.length; i++) {
-            html += '<div class="tab-pane show fade active" role="tabpanel" id="h_' + i + '">'
+            var id = LESLI.questions.categories[i].name.replace(/ /, "_");
+            html += '<div class="tab-pane show fade active" role="tabpanel" id="' + id + '">'
             + '<h4 id="h_' + i + '">' + LESLI.questions.categories[i].name + '</h4>';
             for(var c = 0; c < LESLI.questions.categories[i].statements.length; c++) {
-                var id = 'q_' + LESLI.questions.categories[i].name + '_' + c;
+                id = 'q_' + LESLI.questions.categories[i].name.replace(/ /, "_") + '_' + c;
                 html += '<div class="card question">'
                 + '<div class="card-header">'
                 + '<label for="' + id + '" class="form-label">' + LESLI.questions.categories[i].statements[c] + ':</label>'
                 + '</div>'
                 + '<div class="card-body">'
-                + '<input type="range" class="form-range" id="' + id + '" min="0" max="100">'
-                + '<span class="float-start">Never</span><span class="float-end">Always</span>'
+                + '<input type="range" class="form-control-range" id="' + id + '" min="0" max="100">'
+                + '<span class="float-left">Never</span><span class="float-right">Always</span>'
                 + '</div>'
                 + '</div>';
             }
@@ -98,6 +219,8 @@ var LESLI = {
         html += '</div>';
         
         $('#questions').html(html);
+        $('.form-control-range').change(LESLI.updateData);
+        LESLI.updateData();
     }
 }
 $(LESLI.init);

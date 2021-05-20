@@ -1,6 +1,7 @@
 body {
     background-color:#c1d2cc;
     color:#fff;
+    position: relative;
 }
 
 .center {
@@ -17,4 +18,15 @@ body {
 
 .question {
     margin: 1em;
+}
+
+#navbar-listen {
+    position: sticky;
+    top:0;
+    z-index: 1;
+}
+
+#graph {
+    width: 400px;
+    height:400px;
 }
