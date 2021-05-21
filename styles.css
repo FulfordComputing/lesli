@@ -26,7 +26,6 @@ body {
     z-index: 1;
 }
 
-#graph {
-    width: 400px;
-    height:400px;
+#graph_holder {
+    text-align: center;
 }

@@ -78,7 +78,11 @@ var LESLI = {
         var ctx = canvas.getContext("2d");
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, w, h);
-        ctx.font = '12pt Calibri';
+        if(cx > 100) {
+            ctx.font = '12pt Calibri';
+        } else {
+            ctx.font = '8pt Calibri';
+        }
         ctx.textAlign = 'center';
         ctx.fillStyle = '#86867c';
         
@@ -99,7 +103,7 @@ var LESLI = {
             for(var r = 0; r <= 100; r+=10) {
             var pt = xy(i, r);
             ctx.beginPath();
-            ctx.arc(pt.x, pt.y, 5, 0, 2 * Math.PI);
+            ctx.arc(pt.x, pt.y, cx / 40, 0, 2 * Math.PI);
             ctx.stroke();
             }
         }
@@ -127,8 +131,9 @@ var LESLI = {
         ctx.stroke();
         ctx.restore();
 
+        // label axes
         for(var i = 0; i < catCount; i++) {
-            LESLI.drawTextAlongArc(ctx, LESLI.questions.categories[i].name, cx, cy, cx - 30, Math.PI * 0.03, i * 2 * Math.PI/catCount);
+            LESLI.drawTextAlongArc(ctx, LESLI.questions.categories[i].name, cx, cy, cx*.85, Math.PI * 0.03, i * 2 * Math.PI/catCount);
         }
     
     },
@@ -182,8 +187,14 @@ var LESLI = {
     init: function() {
         
         var i = 0;
+        var width = $('.container').width();
+        if(width > 400) {
+            width = 400;
+        }
         var html = '<nav id="navbar-listen" class="navbar navbar-light bg-light px-3">'
         +'<ul class="nav nav-pills">'
+        + '<div id="small_graph_holder">'
+        + '</div>'
         + '<li class="nav-item"><a class="nav-link" href="#Summary">Summary</a></li>';
         for(var i = 0; i < LESLI.questions.categories.length; i++) {
             var id = LESLI.questions.categories[i].name.replace(/ /, "_");
@@ -195,7 +206,9 @@ var LESLI = {
         + '</nav>'
         + '<div data-bs-spy="scroll" data-bs-target="navbar-listen" data-bs-offset="0" class="questions tab-content">'
         + '<div class="tab-pane show fade active" role="tabpanel" id="Summary">'
-        + '<canvas id="graph" width="400" height="400"></canvas>'
+        + '<div id="graph_holder">'
+        + '<canvas id="graph" width="' + width + '" height="' + width + '"></canvas>'
+        + '</div>'
         + '</div>';
         for(var i = 0; i < LESLI.questions.categories.length; i++) {
             var id = LESLI.questions.categories[i].name.replace(/ /, "_");
@@ -220,6 +233,33 @@ var LESLI = {
         
         $('#questions').html(html);
         $('.form-control-range').change(LESLI.updateData);
+        var g = document.getElementById('graph_holder');
+        function checkVisible(elm) {
+            var rect = elm.getBoundingClientRect();
+            var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+            return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
+          }
+        var currentlyLarge = true;
+        document.addEventListener('scroll', function() {
+            var shouldBeLarge = checkVisible(g);
+            if(!shouldBeLarge && currentlyLarge) {
+                $('#graph_holder').html('');
+                width = 100;
+                $('#small_graph_holder').html('<canvas id="graph" width="' + width + '" height="' + width + '"></canvas>');
+                LESLI.updateData();
+                currentlyLarge = false;
+            }
+            if(shouldBeLarge && !currentlyLarge) {
+                $('#small_graph_holder').html('');
+                width = $('.container').width();
+                if(width > 400) {
+                    width = 400;
+                }
+                $('#graph_holder').html('<canvas id="graph" width="' + width + '" height="' + width + '"></canvas>');
+                LESLI.updateData();
+                currentlyLarge = true;
+            }
+        })
         LESLI.updateData();
     }
 }
