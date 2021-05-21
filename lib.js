@@ -2,6 +2,7 @@ var LESLI = {
     questions: {
         categories: [{
             name:"Family",
+            description: "Our families can have a big impact on our mental health and you can be a big influence on your family's mental health.",
             statements: [
                 "I enjoy being at home with my family",
                 "My family gets along well together",
@@ -14,6 +15,7 @@ var LESLI = {
         },
         {
             name:"Friends",
+            description: "You can't choose your family but you can choose your friends. How do they influence you and how do you influence them?",
             statements: [
                 "My friends treat me well",
                 "My friends are nice to me",
@@ -28,6 +30,7 @@ var LESLI = {
         },
         {
             name:"School",
+            description: "Love it or hate it, school is a big part of teenage life. Have you found your place to belong, thrive and shine?",
             statements: [
                 "I look forward to going to school",
                 "I like being in school",
@@ -41,6 +44,7 @@ var LESLI = {
         },
         {
             name:"Environment",
+            description: "We can\'t always choose where we live or who lives nearby. But we can choose to make a positive difference to the world around us wherever we are",
             statements: [
                 "I like where I live",
                 "I wish there were different people in my neighourhood",
@@ -55,6 +59,7 @@ var LESLI = {
         },
         {
             name:"Self",
+            description: "Being ok with who you are doesn't mean loving yourself and being arrogant. People are flawed. Nobody is perfect. That's what makes us human. The people who are most worth knowing, know your flaws and accept you just as we are.",
             statements: [
                 "I think I am good looking",
                 "I am fun to be around",
@@ -206,14 +211,23 @@ var LESLI = {
         + '</nav>'
         + '<div data-bs-spy="scroll" data-bs-target="navbar-listen" data-bs-offset="0" class="questions tab-content">'
         + '<div class="tab-pane show fade active" role="tabpanel" id="Summary">'
+        + 'Take a few minutes to answer these questions as honestly as you can.'
         + '<div id="graph_holder">'
         + '<canvas id="graph" width="' + width + '" height="' + width + '"></canvas>'
         + '</div>'
-        + '</div>';
+        + '<p>This diagram shows a summary of your responses for each category to help you understand and take control over your mental health</p>'
+        + '<h3>Remember:</h3>'
+        + '<ul><li>It\'s OK not to be OK: seek help if you need it.</li>'
+        + '<li>A higher scores (in this, or any other activity!) doesn\'t mean you\'re worth more, and lower scores doesn\'t mean you\'re worth less.'
+        + '<li>You are not a statistic: don\'t compare yourself to anyone else.</li>'
+        + '<li>Use these results to help you understand <em>how you\'re feeling</em>, not to understand <em>who you are</em>.</li>'
+        + '<li>You\'re you. You\'re awesome as you are.</li></ul>'
+        + '</ul></div>';
         for(var i = 0; i < LESLI.questions.categories.length; i++) {
             var id = LESLI.questions.categories[i].name.replace(/ /, "_");
             html += '<div class="tab-pane show fade active" role="tabpanel" id="' + id + '">'
-            + '<h4 id="h_' + i + '">' + LESLI.questions.categories[i].name + '</h4>';
+            + '<h4 id="h_' + i + '">' + LESLI.questions.categories[i].name + '</h4>'
+            + LESLI.questions.categories[i].description;
             for(var c = 0; c < LESLI.questions.categories[i].statements.length; c++) {
                 id = 'q_' + LESLI.questions.categories[i].name.replace(/ /, "_") + '_' + c;
                 html += '<div class="card question">'
