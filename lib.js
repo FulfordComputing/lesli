@@ -221,7 +221,8 @@ var LESLI = {
         + '<li>A higher scores (in this, or any other activity!) doesn\'t mean you\'re worth more, and lower scores doesn\'t mean you\'re worth less.'
         + '<li>You are not a statistic: don\'t compare yourself to anyone else.</li>'
         + '<li>Use these results to help you understand <em>how you\'re feeling</em>, not to understand <em>who you are</em>.</li>'
-        + '<li>You\'re you. You\'re awesome as you are.</li></ul>'
+        + '<li>You\'re you. You\'re awesome as you are.</li>'
+        + '<li>Your data is not shared with anyone - it stays securely on your device</li></ul>'
         + '</ul></div>';
         for(var i = 0; i < LESLI.questions.categories.length; i++) {
             var id = LESLI.questions.categories[i].name.replace(/ /, "_");
