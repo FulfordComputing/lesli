@@ -8,7 +8,6 @@ var LESLI = {
                 "My family gets along well together",
                 "I like spending time with my parents",
                 "My parents and I doing fun things together",
-                "My family is better than most",
                 "Members of my family talk nicely to one another",
                 "My parents treat me fairly"
             ]
@@ -19,11 +18,7 @@ var LESLI = {
             statements: [
                 "My friends treat me well",
                 "My friends are nice to me",
-                "I wish I had different friends",
-                "My friends are mean to me",
                 "My friends are great",
-                "I have a bad time with my friends",
-                "I have a lot of fun with my friends",
                 "I have enough friends",
                 "My friends will help me if I need it"
             ]
@@ -35,11 +30,8 @@ var LESLI = {
                 "I look forward to going to school",
                 "I like being in school",
                 "School is interesting",
-                "I wish I didn’t have to go to school",
-                "There are many things about school I don’t like",
                 "I enjoy school activities",
                 "I learn a lot at school",
-                "I feel bad at school"
             ]
         },
         {
@@ -47,12 +39,8 @@ var LESLI = {
             description: "We can\'t always choose where we live or who lives nearby. But we can choose to make a positive difference to the world around us wherever we are",
             statements: [
                 "I like where I live",
-                "I wish there were different people in my neighourhood",
-                "I wish I lived in a different house",
-                "I wish I lived somewhere else",
                 "I like my neighbourhood",
                 "I like my neighbours",
-                "This town is filled with mean people",
                 "My family’s house is nice",
                 "There are lots of fun things to do where I live"
             ]
@@ -65,9 +53,7 @@ var LESLI = {
                 "I am fun to be around",
                 "I am a nice person",
                 "Most people like me",
-                "There are lots of things I can do well",
-                "I like to try new things",
-                "I like myself",
+                "There are lots of things I can do well"
             ]
         }
     ]
