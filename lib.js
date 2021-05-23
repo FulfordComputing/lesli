@@ -6,10 +6,10 @@ var LESLI = {
             statements: [
                 "I enjoy being at home with my family",
                 "My family gets along well together",
-                "I like spending time with my parents",
-                "My parents and I doing fun things together",
+                "I like spending time with my parents / carers",
+                "My parents / carers and I like doing fun things together",
                 "Members of my family talk nicely to one another",
-                "My parents treat me fairly"
+                "My parents / carers treat me fairly"
             ]
         },
         {
