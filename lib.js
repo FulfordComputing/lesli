@@ -152,17 +152,34 @@ var LESLI = {
     updateData: function() {
         var total = 0;
         var max = 0;
+
         for(var i = 0; i < LESLI.questions.categories.length; i++) {
             var c = LESLI.questions.categories[i];
             LESLI.questions.categories[i].stats = {
                 total: 0,
                 count: 0,
-                average: 0
+                average: 0,
+                highest: {
+                    index: 0,
+                    value: 0
+                },
+                lowest: {
+                    index: 0,
+                    value: 100
+                }
             }
             for(var ci = 0; ci < LESLI.questions.categories[i].statements.length; ci++) {
                 var id = 'q_' + c.name.replace(/ /, "_") + '_' + ci;
                 var value = parseInt($('#' + id).val());
                 LESLI.questions.categories[i].stats.total+=value;
+                if(value > LESLI.questions.categories[i].stats.highest.value) {
+                    LESLI.questions.categories[i].stats.highest.value = value;
+                    LESLI.questions.categories[i].stats.highest.index = ci;
+                }
+                if(value < LESLI.questions.categories[i].stats.lowest.value) {
+                    LESLI.questions.categories[i].stats.lowest.value = value;
+                    LESLI.questions.categories[i].stats.lowest.index = ci;
+                }
                 LESLI.questions.categories[i].stats.count++;
             }
             LESLI.questions.categories[i].stats.average=
@@ -172,6 +189,21 @@ var LESLI = {
                 max = LESLI.questions.categories[i].stats.average;
             }
         }
+        var highest = 0;
+        var lowest = 0;
+        for(var i = 0; i < LESLI.questions.categories.length; i++) {
+            if(LESLI.questions.categories[i].stats.average > LESLI.questions.categories[highest].stats.average) {
+                highest = i;
+            }
+            if(LESLI.questions.categories[i].stats.average < LESLI.questions.categories[lowest].stats.average) {
+                lowest = i;
+            }
+        }
+        var advice = "<h2>Tips:</h2><ul>"
+        + '<li>It looks like <strong>' + LESLI.questions.categories[highest].name + '</strong> contributes most to your positive mental health</li>'
+        + '<li>Check out what <a href="support.html#' + LESLI.questions.categories[lowest].name + '">support</a> is available to help with <strong>' + LESLI.questions.categories[lowest].name + '</strong></li>'
+        + '</ul>';
+        $('#advice').html(advice);
         LESLI.questions.average = total / LESLI.questions.categories.length;
         LESLI.questions.max = max;
         LESLI.plotGraph();
@@ -199,13 +231,13 @@ var LESLI = {
         + '</nav>'
         + '<div data-bs-spy="scroll" data-bs-target="navbar-listen" data-bs-offset="0" class="questions tab-content">'
         + '<div class="tab-pane show fade active" role="tabpanel" id="Summary">'
-        + 'Take a few minutes to answer these questions as honestly as you can.'
+        + '<p>This diagram shows a summary of your responses for each category to help you understand and take control over your mental health</p>'
         + '<div id="graph_holder">'
         + '<canvas id="graph" width="' + width + '" height="' + width + '"></canvas>'
         + '</div>'
-        + '<p>This diagram shows a summary of your responses for each category to help you understand and take control over your mental health</p>'
+        + '<div id="advice">Take a few minutes to answer these questions as honestly as you can</div>'
         + '<h3>Remember:</h3>'
-        + '<ul><li>It\'s OK not to be OK: seek help if you need it.</li>'
+        + '<ul><li>It\'s OK not to be OK: there\'s <a href="support.html">support available</a> if you need it.</li>'
         + '<li>A higher scores (in this, or any other activity!) doesn\'t mean you\'re worth more, and lower scores doesn\'t mean you\'re worth less.'
         + '<li>You are not a statistic: don\'t compare yourself to anyone else.</li>'
         + '<li>Use these results to help you understand <em>how you\'re feeling</em>, not to understand <em>who you are</em>.</li>'
@@ -248,7 +280,7 @@ var LESLI = {
             if(!shouldBeLarge && currentlyLarge) {
                 $('#graph_holder').html('');
                 width = 100;
-                $('#small_graph_holder').html('<canvas id="graph" width="' + width + '" height="' + width + '"></canvas>');
+                $('#small_graph_holder').html('<a href="#Summary"><canvas id="graph" width="' + width + '" height="' + width + '"></canvas></a>');
                 LESLI.updateData();
                 currentlyLarge = false;
             }
