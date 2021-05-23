@@ -75,6 +75,8 @@ var LESLI = {
     plotGraph: function() {
         var canvas = document.getElementById("graph");
         var img = document.getElementById('logo');
+        if(!canvas || !img)
+            return;
         var w = canvas.width;
         var h = canvas.height;
         var cx = w / 2;
@@ -276,6 +278,7 @@ var LESLI = {
             }
         })
         LESLI.updateData();
+        $('[data-toggle="tooltip"]').tooltip()
     }
 }
 $(LESLI.init);

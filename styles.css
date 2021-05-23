@@ -29,3 +29,13 @@ body {
 #graph_holder {
     text-align: center;
 }
+
+.btn-primary {
+    background-color: #86867c;
+    border: solid 3px #e5e0ce;
+}
+
+.btn-primary:hover {
+    background-color: #c9d0c9;
+    border: solid 3px #e5e0ce;
+}
