@@ -2,6 +2,7 @@ var LESLI = {
     questions: {
         categories: [{
             name:"Family",
+            icon:"family_restroom",
             description: "Our families can have a big impact on our mental health and you can be a big influence on your family's mental health.",
             statements: [
                 "I enjoy being at home with my family",
@@ -14,6 +15,7 @@ var LESLI = {
         },
         {
             name:"Friends",
+            icon:"people",
             description: "You can't choose your family but you can choose your friends. How do they influence you and how do you influence them?",
             statements: [
                 "My friends treat me well",
@@ -25,6 +27,7 @@ var LESLI = {
         },
         {
             name:"School",
+            icon:"school",
             description: "Love it or hate it, school is a big part of teenage life. Have you found your place to belong, thrive and shine?",
             statements: [
                 "I look forward to going to school",
@@ -36,6 +39,7 @@ var LESLI = {
         },
         {
             name:"Environment",
+            icon:"holiday_village",
             description: "We can\'t always choose where we live or who lives nearby. But we can choose to make a positive difference to the world around us wherever we are",
             statements: [
                 "I like where I live",
@@ -47,6 +51,7 @@ var LESLI = {
         },
         {
             name:"Self",
+            icon:"emoji_people",
             description: "Being ok with who you are doesn't mean loving yourself and being arrogant. People are flawed. Nobody is perfect. That's what makes us human. The people who are most worth knowing, know your flaws and accept you just as we are.",
             statements: [
                 "I think I am good looking",
@@ -209,8 +214,36 @@ var LESLI = {
         LESLI.plotGraph();
     },
 
-    init: function() {
+    init_encourage: function() {
+        var html = '<nav id="navbar-listen" class="navbar navbar-light bg-light px-3">'
+        +'<ul class="nav nav-pills">'
+        + '<li class="nav-item"><a class="nav-link" href="#Summary"><span class="material-icons">auto_graph</span> Summary</a></li>';
+        for(var i = 0; i < LESLI.questions.categories.length; i++) {
+            var id = LESLI.questions.categories[i].name.replace(/ /, "_");
+            html += '<li class="nav-item">'
+            + '<a class="nav-link" href="#' + id + '"><span class="material-icons">' + LESLI.questions.categories[i].icon + '</span> ' + LESLI.questions.categories[i].name + '</a>'
+            + '</li>';
+        }
+        html += '</ul>'
+        + '</nav>'
+        + '<div data-bs-spy="scroll" data-bs-target="navbar-listen" data-bs-offset="0" class="questions tab-content">'
+        + '<div class="tab-pane show fade active" role="tabpanel" id="Summary">'
+        + '<p>This diagram shows a summary of your responses for each category to help you understand and take control over your mental health</p>'
+        + '<div id="advice"></div>';
+        for(var i = 0; i < LESLI.questions.categories.length; i++) {
+            var id = LESLI.questions.categories[i].name.replace(/ /, "_");
+            html += '<div class="tab-pane show fade active" role="tabpanel" id="' + id + '">'
+            + '<h4 id="h_' + i + '">' + LESLI.questions.categories[i].name + '</h4>'
+            + LESLI.questions.categories[i].description;
+            html += '</div>';
+        }
+        html += '</table>';
+        html += '</div>';
         
+        $('#questions').html(html);
+    },
+
+    init_listen: function() {
         var i = 0;
         var width = $('.container').width();
         if(width > 400) {
@@ -220,11 +253,11 @@ var LESLI = {
         +'<ul class="nav nav-pills">'
         + '<div id="small_graph_holder">'
         + '</div>'
-        + '<li class="nav-item"><a class="nav-link" href="#Summary">Summary</a></li>';
+        + '<li class="nav-item"><a class="nav-link" href="#Summary"><span class="material-icons">auto_graph</span> Summary</a></li>';
         for(var i = 0; i < LESLI.questions.categories.length; i++) {
             var id = LESLI.questions.categories[i].name.replace(/ /, "_");
             html += '<li class="nav-item">'
-            + '<a class="nav-link" href="#' + id + '">' + LESLI.questions.categories[i].name + '</a>'
+            + '<a class="nav-link" href="#' + id + '"><span class="material-icons">' + LESLI.questions.categories[i].icon + '</span> ' + LESLI.questions.categories[i].name + '</a>'
             + '</li>';
         }
         html += '</ul>'
@@ -296,6 +329,15 @@ var LESLI = {
             }
         })
         LESLI.updateData();
+    },
+
+    init: function() {
+        var m = /\/([a-zA-Z]*)\.html$/.exec(location.href);
+        if(m) {
+            if(m && m[1] && LESLI['init_' + m[1]]) {
+                LESLI['init_' + m[1]]();
+            }
+        }
         $('[data-toggle="tooltip"]').tooltip()
     }
 }

@@ -30,6 +30,10 @@ body {
     text-align: center;
 }
 
+#small_graph_holder{
+    float:right;
+}
+
 .btn-primary,.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
     background-color: #86867c;
     border: solid 3px #e5e0ce;
