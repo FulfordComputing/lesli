@@ -215,11 +215,27 @@ var LESLI = {
     },
 
     random: function(list) {
-        return list[Math.round(Math.random() * list.length -1)];
+        return list[Math.round(Math.random() * (list.length -1))];
     },
 
     init_encourage: function() {
         $('#btn_encourage').click(LESLI.encourageChoose);
+    },
+
+    init_laugh: function() {
+        var gifs = ['<iframe src="https://giphy.com/embed/T3Vx6sVAXzuG4" width="480" height="291" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/90s-baby-T3Vx6sVAXzuG4">via GIPHY</a></p>',
+        '<iframe src="https://giphy.com/embed/3osxYk9qClrQVXVfiw" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/tvland-younger-youngertv-3osxYk9qClrQVXVfiw">via GIPHY</a></p>',
+        '<iframe src="https://giphy.com/embed/JmD9mkDmzvXE7nxy7j" width="480" height="412" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/embarassed-anthony-fauci-dr-JmD9mkDmzvXE7nxy7j">via GIPHY</a></p>',
+        '<iframe src="https://giphy.com/embed/GpyS1lJXJYupG" width="480" height="392" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/laughing-ryan-gosling-GpyS1lJXJYupG">via GIPHY</a></p>',
+        '<iframe src="https://giphy.com/embed/ODofCyJUSRoDBH8lKe" width="480" height="393" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/election2020-laugh-donald-trump-lick-ODofCyJUSRoDBH8lKe">via GIPHY</a></p>',
+        '<iframe src="https://giphy.com/embed/ZqlvCTNHpqrio" width="480" height="259" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/laughing-despicable-me-minions-ZqlvCTNHpqrio">via GIPHY</a></p>',
+        '<iframe src="https://giphy.com/embed/3i7zenReaUuI0" width="480" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/laughing-scrubs-gif-3i7zenReaUuI0">via GIPHY</a></p>',
+        '<iframe src="https://giphy.com/embed/Mjl0BsAgMGYTe" width="400" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/laughing-duck-donald-Mjl0BsAgMGYTe">via GIPHY</a></p>',
+        '<iframe src="https://giphy.com/embed/CoDp6NnSmItoY" width="480" height="319" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/laughing-laugh-ricky-gervais-CoDp6NnSmItoY">via GIPHY</a></p>',
+        '<iframe src="https://giphy.com/embed/88iYsvbegSUn9bSTF8" width="479" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/fallontonight-funny-lol-88iYsvbegSUn9bSTF8">via GIPHY</a></p>'
+    ];
+        var laugh = LESLI.random(gifs);
+        $('#laugh').html(laugh);
     },
 
     encourageChoose: function(e) {
