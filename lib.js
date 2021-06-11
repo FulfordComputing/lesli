@@ -214,7 +214,37 @@ var LESLI = {
         LESLI.plotGraph();
     },
 
+    random: function(list) {
+        return list[Math.round(Math.random() * list.length -1)];
+    },
+
     init_encourage: function() {
+        $('#btn_encourage').click(LESLI.encourageChoose);
+    },
+
+    encourageChoose: function(e) {
+        var people = ["friend", "family member", "neighbour", "teacher", "relative", "random stranger", "teaching assistant"];
+        var ideas = [
+            "Write a note to a", 
+            "Send a message to a",
+            "Write an email to a",
+            "Leave some chocolate for a"];
+        var reasons = [
+            "for being helpful",
+            "for being awesome",
+            "for listening",
+            "just for being them",
+            "to thank them for their kindness",
+            "to make them smile",
+            "to improve their day",
+            "so they know someone cares",
+            "for looking out for others"
+        ];
+        var idea = LESLI.random(ideas) + " " + LESLI.random(people) + " " + LESLI.random(reasons);
+        $('#encourage').html(idea);
+    },
+
+    init_support: function() {
         var html = '<nav id="navbar-listen" class="navbar navbar-light bg-light px-3">'
         +'<ul class="nav nav-pills">'
         + '<li class="nav-item"><a class="nav-link" href="#Summary"><span class="material-icons">auto_graph</span> Summary</a></li>';
@@ -239,7 +269,6 @@ var LESLI = {
         }
         html += '</table>';
         html += '</div>';
-        
         $('#questions').html(html);
     },
 

@@ -43,3 +43,8 @@ body {
     background-color: #c9d0c9;
     border: solid 3px #e5e0ce;
 }
+
+.encourage {
+    padding:1em;
+    margin: 1em;
+}
