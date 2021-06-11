@@ -1,4 +1,20 @@
 var LESLI = {
+    support: [
+        {
+            name:"Childline",
+            link: "https://www.childline.org.uk/",
+            description: "Get help and advice about a wide range of issues, call us on 0800 1111, talk to a counsellor online, send Childline an email or post on the message boards.",
+            video: "fCA6EhBhiC8",
+            suitability: "111111" // all family friends school environment self
+        },
+        {
+            name:"Mental Health UK",
+            link: "https://mentalhealth-uk.org/",
+            description: "Mental Health UK works across England, Scotland, Wales, and Northern Ireland to support people affected by mental health problems.",
+            video: "ElyRNRe2k-0",
+            suitability: "111111" // all family friends school environment self
+        }
+    ],
     questions: {
         categories: [{
             name:"Family",
@@ -222,6 +238,11 @@ var LESLI = {
         $('#btn_encourage').click(LESLI.encourageChoose);
     },
 
+    init_inspire: function() {
+        var videos = ["CfvYlWG1cA0", "IDPDEKtd2yM", "2E54NTi6Xow", "NHf56w1AmPw", "YIG5mqXpVl4", "WT_xFNBbFRY"];
+        $('#inspire').html('<iframe width="560" height="315" src="https://www.youtube.com/embed/' + LESLI.random(videos) + '" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+    },
+
     init_laugh: function() {
         var gifs = ['<iframe src="https://giphy.com/embed/T3Vx6sVAXzuG4" width="480" height="291" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/90s-baby-T3Vx6sVAXzuG4">via GIPHY</a></p>',
         '<iframe src="https://giphy.com/embed/3osxYk9qClrQVXVfiw" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/tvland-younger-youngertv-3osxYk9qClrQVXVfiw">via GIPHY</a></p>',
@@ -239,7 +260,7 @@ var LESLI = {
     },
 
     encourageChoose: function(e) {
-        var people = ["friend", "family member", "neighbour", "teacher", "relative", "random stranger", "teaching assistant"];
+        var people = ["friend", "family member", "neighbour", "teacher", "relative", "teaching assistant"];
         var ideas = [
             "Write a note to a", 
             "Send a message to a",
@@ -248,7 +269,7 @@ var LESLI = {
         var reasons = [
             "for being helpful",
             "for being awesome",
-            "for listening",
+            "for being a good listener",
             "just for being them",
             "to thank them for their kindness",
             "to make them smile",
@@ -257,29 +278,70 @@ var LESLI = {
             "for looking out for others"
         ];
         var idea = LESLI.random(ideas) + " " + LESLI.random(people) + " " + LESLI.random(reasons);
-        $('#encourage').html(idea);
+        var partialIdea = "";
+        var encourage = document.getElementById("encourage");
+        function revealChar() {
+            if(partialIdea.length < idea.length) {
+                partialIdea += idea[partialIdea.length];
+                encourage.innerText = partialIdea;
+            }
+            setTimeout(revealChar, 50);
+        }
+        revealChar();
+        
     },
 
     init_support: function() {
-        var html = '<nav id="navbar-listen" class="navbar navbar-light bg-light px-3">'
-        +'<ul class="nav nav-pills">'
-        + '<li class="nav-item"><a class="nav-link" href="#Summary"><span class="material-icons">auto_graph</span> Summary</a></li>';
+        var html = '<ul class="nav nav-tabs" id="tabs-support" role="tablist">'
+        + '<li class="nav-item" role="presentation">'
+        + '<a id="tab-all" class="nav-link active" href="#All" data-toggle="tab" role="tab" arial-controls="all" aria-selected="true"><span class="material-icons">star_rate</span> All</a></li>';
         for(var i = 0; i < LESLI.questions.categories.length; i++) {
             var id = LESLI.questions.categories[i].name.replace(/ /, "_");
-            html += '<li class="nav-item">'
-            + '<a class="nav-link" href="#' + id + '"><span class="material-icons">' + LESLI.questions.categories[i].icon + '</span> ' + LESLI.questions.categories[i].name + '</a>'
+            html += '<li class="nav-item" role="presentation">'
+            + '<a id="tab-' + id + '" class="nav-link active" data-toggle="tab" role="tab" arial-controls="' + id + '" aria-selected="false" href="#' + id + '"><span class="material-icons">' + LESLI.questions.categories[i].icon + '</span> ' + LESLI.questions.categories[i].name + '</a>'
             + '</li>';
         }
         html += '</ul>'
-        + '</nav>'
-        + '<div data-bs-spy="scroll" data-bs-target="navbar-listen" data-bs-offset="0" class="questions tab-content">'
-        + '<div class="tab-pane show fade active" role="tabpanel" id="Summary">'
-        + '<p>This diagram shows a summary of your responses for each category to help you understand and take control over your mental health</p>'
-        + '<div id="advice"></div>';
+        + '</ul>'
+        + '<div class="tab-content">'
+        + '<div class="tab-pane fade show active" role="tabpanel" id="All" aria-labelledby="tab-All">'
+        + '<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">'
+        + '<ol class="carousel-indicators">';
+        for(var i = 0; i < LESLI.support.length; i++) {
+            html += '<li data-target="#carouselExampleIndicators" data-slide-to="' + i + '"';
+            if(i == 0) {
+                html += 'class="active"';
+            } 
+            html += '></li>';
+        }
+        html += '</ol>'
+        + '<div class="carousel-inner center highlight">';
+        for(var i = 0; i < LESLI.support.length; i++){
+            html += '<div class="carousel-item' + (i==0?" active":"") + '">'
+            + '<h2>' + LESLI.support[i].name + '</h2>'
+            + '<div>' + LESLI.support[i].description + '</div>'
+            + '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + LESLI.support[i].video + '" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+            + '<p><a class="btn btn-secondary" href="' + LESLI.support[i].link + '">find out more</a></p>'
+            + '<p>&nbsp;</p>'
+            + '</div>'
+        }
+        html += '</div>'
+        + '<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">'
+        + '<span class="carousel-control-prev-icon" aria-hidden="true"></span>'
+        + '<span class="sr-only">Previous</span>'
+        + '</a>'
+        + '<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">'
+        + '<span class="carousel-control-next-icon" aria-hidden="true"></span>'
+        + '<span class="sr-only">Next</span>'
+        + '</a>'
+        + '</div>'
+        
+        
+        html += '</div>';
         for(var i = 0; i < LESLI.questions.categories.length; i++) {
             var id = LESLI.questions.categories[i].name.replace(/ /, "_");
-            html += '<div class="tab-pane show fade active" role="tabpanel" id="' + id + '">'
-            + '<h4 id="h_' + i + '">' + LESLI.questions.categories[i].name + '</h4>'
+            html += '<div class="tab-pane fade" role="tabpanel" id="' + id + '" aria-labelledby="tab-' + id + '">'
+            + '<h4>' + LESLI.questions.categories[i].name + '</h4>'
             + LESLI.questions.categories[i].description;
             html += '</div>';
         }
@@ -377,7 +439,7 @@ var LESLI = {
     },
 
     init: function() {
-        var m = /\/([a-zA-Z]*)\.html$/.exec(location.href);
+        var m = /\/([a-zA-Z]*)\.html/.exec(location.href);
         if(m) {
             if(m && m[1] && LESLI['init_' + m[1]]) {
                 LESLI['init_' + m[1]]();

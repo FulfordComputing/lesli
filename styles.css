@@ -44,8 +44,28 @@ body {
     border: solid 3px #e5e0ce;
 }
 
-.encourage {
+#encourage {
     padding:1em;
     margin: 1em;
     background-color: #e5e0ce;
+    font-family: 'Indie Flower', cursive;
+    font-size:2em;
+}
+
+.btn-push {
+    box-shadow: 5px 10px 2px #555;
+}
+
+.btn-push:active {
+    margin-top:5px;
+    margin-left:5px;
+    box-shadow:none;
+}
+
+.highlight {
+    background-color:#e5e0ce;
+}
+
+.nav-item a {
+    color: #495057;
 }
