@@ -45,11 +45,11 @@ body {
 }
 
 #encourage {
-    padding:1em;
-    margin: 1em;
+    padding:.5em;
+    margin: .5em;
     background-color: #e5e0ce;
     font-family: 'Indie Flower', cursive;
-    font-size:2em;
+    font-size:1.5m;
 }
 
 .btn-push {
